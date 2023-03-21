@@ -200,7 +200,7 @@ type NetworkPort struct {
 	// indicating whether Wake on LAN (WoL) is enabled for this network port.
 	WakeOnLANEnabled bool
 	// rawData holds the original serialized JSON so we can compare updates.
-	rawData []byte
+	RawData []byte
 }
 
 // UnmarshalJSON unmarshals a NetworkPort object from the raw JSON.
@@ -218,7 +218,7 @@ func (networkport *NetworkPort) UnmarshalJSON(b []byte) error {
 	*networkport = NetworkPort(t.temp)
 
 	// This is a read/write object, so we need to save the raw object data for later
-	networkport.rawData = b
+	networkport.RawData = b
 
 	return nil
 }
@@ -228,7 +228,7 @@ func (networkport *NetworkPort) Update() error {
 	// Get a representation of the object's original state so we can find what
 	// to update.
 	original := new(NetworkPort)
-	err := original.UnmarshalJSON(networkport.rawData)
+	err := original.UnmarshalJSON(networkport.RawData)
 	if err != nil {
 		return err
 	}
